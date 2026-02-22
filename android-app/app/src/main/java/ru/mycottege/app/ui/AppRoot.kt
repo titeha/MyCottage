@@ -1,4 +1,4 @@
-package ru.moyadacha.app.ui
+package ru.mycottege.app.ui
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +16,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.foundation.layout.padding
 
 private data class AppTab(
   val route: String,
@@ -107,6 +108,18 @@ private fun AppNavHost(navController: NavHostController, modifier: Modifier) {
 private fun PlaceholderScreen(title: String) {
   Surface(Modifier.fillMaxSize()) {
     Text(text = title, style = MaterialTheme.typography.headlineMedium)
+  }
+}
+
+@Composable
+private fun PhoneLayout(navController: NavHostController) {
+  Scaffold(
+    bottomBar = { BottomBar(navController) }
+  ) { padding ->
+    AppNavHost(
+      navController,
+      Modifier.fillMaxSize().padding(padding)
+    )
   }
 }
 
