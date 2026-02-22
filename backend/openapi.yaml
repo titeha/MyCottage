@@ -1,0 +1,162 @@
+openapi: 3.0.3
+info:
+  title: Moya Dacha API
+  version: "0.5.0"
+servers:
+  - url: https://api.example.com/api/v1
+security:
+  - bearerAuth: []
+paths:
+  /health:
+    get:
+      summary: Healthcheck
+      responses:
+        "200":
+          description: OK
+
+  /sites:
+    get:
+      summary: List sites
+      responses:
+        "200":
+          description: OK
+    post:
+      summary: Create site
+      responses:
+        "201":
+          description: Created
+
+  /sites/{siteId}/zones:
+    get:
+      summary: List zones for site
+      parameters:
+        - $ref: '#/components/parameters/siteId'
+      responses:
+        "200":
+          description: OK
+    post:
+      summary: Create zone
+      parameters:
+        - $ref: '#/components/parameters/siteId'
+      responses:
+        "201":
+          description: Created
+
+  /sites/{siteId}/plantings:
+    get:
+      summary: List plantings for site
+      parameters:
+        - $ref: '#/components/parameters/siteId'
+      responses:
+        "200":
+          description: OK
+    post:
+      summary: Create planting
+      parameters:
+        - $ref: '#/components/parameters/siteId'
+      responses:
+        "201":
+          description: Created
+
+  /sites/{siteId}/tasks:
+    get:
+      summary: List tasks for site
+      parameters:
+        - $ref: '#/components/parameters/siteId'
+        - name: from
+          in: query
+          schema: { type: string, format: date }
+        - name: to
+          in: query
+          schema: { type: string, format: date }
+      responses:
+        "200":
+          description: OK
+    post:
+      summary: Create task
+      parameters:
+        - $ref: '#/components/parameters/siteId'
+      responses:
+        "201":
+          description: Created
+
+  /sites/{siteId}/plot-plans:
+    get:
+      summary: List plot plans
+      parameters:
+        - $ref: '#/components/parameters/siteId'
+      responses:
+        "200":
+          description: OK
+    post:
+      summary: Create plot plan
+      parameters:
+        - $ref: '#/components/parameters/siteId'
+      responses:
+        "201":
+          description: Created
+
+  /sites/{siteId}/weather/daily:
+    get:
+      summary: Get cached daily weather
+      parameters:
+        - $ref: '#/components/parameters/siteId'
+        - name: from
+          in: query
+          schema: { type: string, format: date }
+        - name: to
+          in: query
+          schema: { type: string, format: date }
+      responses:
+        "200":
+          description: OK
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    siteId:
+      name: siteId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    Site:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        regionText: { type: string }
+        latitude: { type: number, nullable: true }
+        longitude: { type: number, nullable: true }
+        hardinessZone: { type: string, nullable: true }
+    Zone:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        siteId: { type: string, format: uuid }
+        name: { type: string }
+        type: { type: string }
+    Planting:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        siteId: { type: string, format: uuid }
+        zoneId: { type: string, format: uuid }
+        cropId: { type: string }
+        varietyText: { type: string, nullable: true }
+        plantedAt: { type: string, format: date }
+    Task:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        siteId: { type: string, format: uuid }
+        title: { type: string }
+        startAt: { type: string, format: date }
+        endAt: { type: string, format: date, nullable: true }
+        status: { type: string }

@@ -1,0 +1,28 @@
+# OS / IDE
+.DS_Store
+.idea/
+*.iml
+
+# Android / Gradle
+.gradle/
+build/
+**/build/
+local.properties
+*.apk
+*.aab
+
+# Kotlin/Java
+*.class
+
+# Node/Python/General
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Logs
+*.log
+
+# Secrets
+**/secrets/
