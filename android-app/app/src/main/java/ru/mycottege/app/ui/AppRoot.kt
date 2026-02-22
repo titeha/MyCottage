@@ -44,15 +44,6 @@ fun AppRoot() {
 }
 
 @Composable
-private fun PhoneLayout(navController: NavHostController) {
-  Scaffold(
-    bottomBar = { BottomBar(navController) }
-  ) { padding ->
-    AppNavHost(navController, Modifier.fillMaxSize())
-  }
-}
-
-@Composable
 private fun TabletLayout(navController: NavHostController) {
   Row(Modifier.fillMaxSize()) {
     NavigationRailBar(navController)
