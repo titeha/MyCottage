@@ -25,18 +25,21 @@ import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
 import ru.mycottege.app.legal.DisclaimerDialog
 import ru.mycottege.app.legal.LegalPrefs
+import androidx.annotation.StringRes
+import androidx.compose.ui.res.stringResource
+import ru.mycottege.app.R
 
 private data class AppTab(
   val route: String,
-  val title: String,
+  @StringRes val titleRes: Int,
   val icon: ImageVector,
 )
 
 private val tabs = listOf(
-  AppTab("today", "Сегодня", Icons.Filled.Home),
-  AppTab("calendar", "Календарь", Icons.Filled.CalendarMonth),
-  AppTab("plantings", "Посадки", Icons.Filled.Spa),
-  AppTab("plan", "План", Icons.Filled.Map),
+  AppTab("today", R.string.tab_today, Icons.Filled.Home),
+  AppTab("calendar", R.string.tab_calendar, Icons.Filled.CalendarMonth),
+  AppTab("plantings", R.string.tab_plantings, Icons.Filled.Spa),
+  AppTab("plan", R.string.tab_plan, Icons.Filled.Map),
 )
 
 @Composable
@@ -52,7 +55,7 @@ fun AppRoot() {
     )
     return
   }
-  
+
   val navController = rememberNavController()
   val isTabletLike = LocalConfiguration.current.smallestScreenWidthDp >= 600
 
@@ -79,8 +82,8 @@ private fun BottomBar(navController: NavHostController) {
       NavigationBarItem(
         selected = selected,
         onClick = { navController.navigateSingleTop(tab.route) },
-        icon = { Icon(tab.icon, contentDescription = tab.title) },
-        label = { Text(tab.title) }
+        icon = { Icon(tab.icon, contentDescription = stringResource(tab.titleRes)) },
+        label = { stringResource(tab.titleRes) }
       )
     }
   }
@@ -94,8 +97,8 @@ private fun NavigationRailBar(navController: NavHostController) {
       NavigationRailItem(
         selected = selected,
         onClick = { navController.navigateSingleTop(tab.route) },
-        icon = { Icon(tab.icon, contentDescription = tab.title) },
-        label = { Text(tab.title) }
+        icon = { Icon(tab.icon, contentDescription = stringResource(tab.titleRes)) },
+        label = { stringResource(tab.titleRes) }
       )
     }
   }
