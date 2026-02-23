@@ -15,8 +15,7 @@ object DbProvider {
         AppDatabase::class.java,
         "my_cottage.db"
       )
-        // На ранней стадии разработки удобно не падать на миграциях.
-        // Когда схема стабилизируется — заменим на нормальные миграции.
+        .addMigrations(MIGRATION_1_2)
         .fallbackToDestructiveMigration()
         .build()
         .also { instance = it }

@@ -7,6 +7,7 @@ import java.time.LocalDate
 @Entity(tableName = "plantings")
 data class PlantingEntity(
   @PrimaryKey(autoGenerate = true) val id: Long = 0,
+  val cropId: String? = null,
   val cropName: String,
   val plantedDate: LocalDate
 )
