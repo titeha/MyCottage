@@ -27,4 +27,15 @@
 
 При использовании СЗР и агрохимикатов всегда следуйте официальной инструкции производителя и соблюдайте меры безопасности. При сомнениях обращайтесь к специалистам.
     </string>
+
+    <!-- Plantings -->
+    <string name="plantings_empty">Пока нет посадок. Добавьте первую.</string>
+    <string name="plantings_add">Добавить посадку</string>
+    <string name="plantings_crop_label">Культура</string>
+    <string name="plantings_crop_placeholder">Например: томат</string>
+    <string name="plantings_planted_on">Посажено: %1$s</string>
+
+    <!-- Common -->
+    <string name="common_cancel">Отмена</string>
+    <string name="common_add">Добавить</string>
 </resources>
