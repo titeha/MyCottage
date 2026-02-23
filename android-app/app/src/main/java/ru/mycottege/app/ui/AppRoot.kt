@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import ru.mycottege.app.R
 import androidx.compose.material.icons.filled.Settings
 import ru.mycottege.app.ui.screens.SettingsScreen
+import ru.mycottege.app.ui.common.AppScreen
 
 private data class AppTab(
   val route: String,
@@ -124,9 +125,7 @@ private fun AppNavHost(navController: NavHostController, modifier: Modifier) {
 
 @Composable
 private fun PlaceholderScreen(@StringRes titleRes: Int) {
-  Surface(Modifier.fillMaxSize()) {
-    Text(text = stringResource(titleRes), style = MaterialTheme.typography.headlineMedium)
-  }
+  AppScreen(titleRes)
 }
 
 @Composable
