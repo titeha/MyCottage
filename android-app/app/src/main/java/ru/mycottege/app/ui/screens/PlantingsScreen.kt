@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -28,16 +27,21 @@ import ru.mycottege.app.R
 import ru.mycottege.app.ui.common.AppScreen
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
-private data class PlantingUi(
-  val id: Long,
-  val cropName: String,
-  val plantedDate: LocalDate,
-)
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.launch
+import ru.mycottege.app.data.local.db.DbProvider
+import ru.mycottege.app.data.local.db.PlantingEntity
+import androidx.compose.runtime.rememberCoroutineScope
 
 @Composable
 fun PlantingsScreen() {
-  val plantings = remember { mutableStateListOf<PlantingUi>() }
+  val context = LocalContext.current
+  val dao = remember { DbProvider.get(context).plantingDao() }
+  val scope = rememberCoroutineScope()
+
+  val plantings by dao.observeAll().collectAsState(initial = emptyList())
+
   var showAddDialog by remember { mutableStateOf(false) }
 
   AppScreen(R.string.tab_plantings) {
@@ -65,13 +69,14 @@ fun PlantingsScreen() {
     AddPlantingDialog(
       onDismiss = { showAddDialog = false },
       onAdd = { cropName ->
-        plantings.add(
-          PlantingUi(
-            id = System.currentTimeMillis(),
-            cropName = cropName.trim(),
-            plantedDate = LocalDate.now()
+        scope.launch {
+          dao.insert(
+            PlantingEntity(
+              cropName = cropName.trim(),
+              plantedDate = LocalDate.now()
+            )
           )
-        )
+        }
         showAddDialog = false
       }
     )
@@ -80,7 +85,7 @@ fun PlantingsScreen() {
 
 @Composable
 private fun PlantingsList(
-  items: List<PlantingUi>,
+  items: List<PlantingEntity>,
   modifier: Modifier = Modifier
 ) {
   val formatter = remember { DateTimeFormatter.ofPattern("dd.MM.yyyy") }
