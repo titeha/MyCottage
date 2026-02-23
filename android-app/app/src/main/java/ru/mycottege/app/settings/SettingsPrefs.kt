@@ -11,9 +11,11 @@ import kotlinx.coroutines.flow.map
 private const val STORE_NAME = "settings_prefs"
 private val Context.dataStore by preferencesDataStore(name = STORE_NAME)
 
+
 private object Keys {
   val themeMode = intPreferencesKey("theme_mode") // 0=SYSTEM, 1=LIGHT, 2=DARK
   val dynamicColor = booleanPreferencesKey("dynamic_color")
+  val unitSystem = intPreferencesKey("unit_system") // 0=METRIC, 1=IMPERIAL
 }
 
 class SettingsPrefs(private val context: Context) {
@@ -23,6 +25,16 @@ class SettingsPrefs(private val context: Context) {
       1 -> ThemeMode.LIGHT
       2 -> ThemeMode.DARK
       else -> ThemeMode.SYSTEM
+    }
+  }
+
+  val unitSystem: Flow<UnitSystem> = context.dataStore.data.map { prefs ->
+    UnitSystem.fromId(prefs[Keys.unitSystem] ?: UnitSystem.METRIC.id)
+  }
+
+  suspend fun setUnitSystem(system: UnitSystem) {
+    context.dataStore.edit { prefs ->
+      prefs[Keys.unitSystem] = system.id
     }
   }
 
