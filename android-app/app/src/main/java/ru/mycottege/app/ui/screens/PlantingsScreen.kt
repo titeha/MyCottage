@@ -33,6 +33,16 @@ import kotlinx.coroutines.launch
 import ru.mycottege.app.data.local.db.DbProvider
 import ru.mycottege.app.data.local.db.PlantingEntity
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.Alignment
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.runtime.rememberCoroutineScope
+import ru.mycottege.app.util.localDateToUtcEpochMillis
+import ru.mycottege.app.util.utcEpochMillisToLocalDate
 
 @Composable
 fun PlantingsScreen() {
@@ -68,16 +78,15 @@ fun PlantingsScreen() {
   if (showAddDialog) {
     AddPlantingDialog(
       onDismiss = { showAddDialog = false },
-      onAdd = { cropName ->
+      onAdd = { cropName, plantedDate ->
         scope.launch {
           dao.insert(
             PlantingEntity(
               cropName = cropName.trim(),
-              plantedDate = LocalDate.now()
+              plantedDate = plantedDate
             )
           )
         }
-        showAddDialog = false
       }
     )
   }
@@ -114,27 +123,51 @@ private fun PlantingsList(
 @Composable
 private fun AddPlantingDialog(
   onDismiss: () -> Unit,
-  onAdd: (String) -> Unit
+  onAdd: (String, LocalDate) -> Unit
 ) {
   var crop by remember { mutableStateOf("") }
+
+  var selectedDate by remember { mutableStateOf(LocalDate.now()) }
+  var showDatePicker by remember { mutableStateOf(false) }
 
   AlertDialog(
     onDismissRequest = onDismiss,
     title = { Text(text = stringResource(R.string.plantings_add)) },
     text = {
-      OutlinedTextField(
-        value = crop,
-        onValueChange = { crop = it },
-        label = { Text(text = stringResource(R.string.plantings_crop_label)) },
-        placeholder = { Text(text = stringResource(R.string.plantings_crop_placeholder)) },
-        singleLine = true,
-        modifier = Modifier.fillMaxWidth()
-      )
+      Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        OutlinedTextField(
+          value = crop,
+          onValueChange = { crop = it },
+          label = { Text(text = stringResource(R.string.plantings_crop_label)) },
+          placeholder = { Text(text = stringResource(R.string.plantings_crop_placeholder)) },
+          singleLine = true,
+          modifier = Modifier.fillMaxWidth()
+        )
+
+        Row(
+          modifier = Modifier.fillMaxWidth(),
+          verticalAlignment = Alignment.CenterVertically
+        ) {
+          Text(
+            text = stringResource(R.string.plantings_date_label),
+            modifier = Modifier.weight(1f)
+          )
+          TextButton(onClick = { showDatePicker = true }) {
+            Text(text = stringResource(R.string.plantings_pick_date))
+          }
+        }
+
+        // Можно показать выбранную дату текстом:
+        Text(
+          text = selectedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+          style = MaterialTheme.typography.bodySmall
+        )
+      }
     },
     confirmButton = {
       TextButton(
         enabled = crop.isNotBlank(),
-        onClick = { onAdd(crop) }
+        onClick = { onAdd(crop, selectedDate) }
       ) {
         Text(text = stringResource(R.string.common_add))
       }
@@ -145,4 +178,52 @@ private fun AddPlantingDialog(
       }
     }
   )
+
+  if (showDatePicker) {
+    PlantingDatePickerDialog(
+      initialDate = selectedDate,
+      onDismiss = { showDatePicker = false },
+      onDateSelected = {
+        selectedDate = it
+        showDatePicker = false
+      }
+    )
+  }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PlantingDatePickerDialog(
+  initialDate: LocalDate,
+  onDismiss: () -> Unit,
+  onDateSelected: (LocalDate) -> Unit
+) {
+  val state = rememberDatePickerState(
+    initialSelectedDateMillis = localDateToUtcEpochMillis(initialDate)
+  )
+
+  DatePickerDialog(
+    onDismissRequest = onDismiss,
+    confirmButton = {
+      TextButton(
+        onClick = {
+          val millis = state.selectedDateMillis
+          if (millis != null) {
+            onDateSelected(utcEpochMillisToLocalDate(millis))
+          } else {
+            onDismiss()
+          }
+        }
+      ) {
+        Text(stringResource(R.string.common_ok))
+      }
+    },
+    dismissButton = {
+      TextButton(onClick = onDismiss) {
+        Text(stringResource(R.string.common_cancel))
+      }
+    }
+  ) {
+    DatePicker(state = state)
+  }
 }
