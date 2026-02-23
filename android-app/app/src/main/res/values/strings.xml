@@ -38,4 +38,15 @@
     <!-- Common -->
     <string name="common_cancel">Отмена</string>
     <string name="common_add">Добавить</string>
+
+    <!-- Plantings -->
+    <string name="plantings_date_label">Дата посадки</string>
+    <string name="plantings_pick_date">Выбрать дату</string>
+    <string name="plantings_delete">Удалить</string>
+    <string name="plantings_delete_title">Удалить посадку?</string>
+    <string name="plantings_delete_text">Посадка «%1$s» будет удалена.</string>
+
+    <!-- Common -->
+    <string name="common_ok">ОК</string>
+    <string name="common_delete">Удалить</string>
 </resources>
