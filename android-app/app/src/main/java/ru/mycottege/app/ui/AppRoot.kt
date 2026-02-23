@@ -17,6 +17,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+import ru.mycottege.app.legal.DisclaimerDialog
+import ru.mycottege.app.legal.LegalPrefs
 
 private data class AppTab(
   val route: String,
@@ -33,6 +41,18 @@ private val tabs = listOf(
 
 @Composable
 fun AppRoot() {
+  val context = LocalContext.current
+  val legalPrefs = remember { LegalPrefs(context) }
+  val scope = rememberCoroutineScope()
+  val accepted by legalPrefs.isDisclaimerAccepted.collectAsState(initial = false)
+
+  if (!accepted) {
+    DisclaimerDialog(
+      onAccept = { scope.launch { legalPrefs.acceptDisclaimer() } }
+    )
+    return
+  }
+  
   val navController = rememberNavController()
   val isTabletLike = LocalConfiguration.current.smallestScreenWidthDp >= 600
 
