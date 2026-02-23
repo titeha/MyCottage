@@ -28,6 +28,8 @@ import ru.mycottege.app.legal.LegalPrefs
 import androidx.annotation.StringRes
 import androidx.compose.ui.res.stringResource
 import ru.mycottege.app.R
+import androidx.compose.material.icons.filled.Settings
+import ru.mycottege.app.ui.screens.SettingsScreen
 
 private data class AppTab(
   val route: String,
@@ -40,6 +42,7 @@ private val tabs = listOf(
   AppTab("calendar", R.string.tab_calendar, Icons.Filled.CalendarMonth),
   AppTab("plantings", R.string.tab_plantings, Icons.Filled.Spa),
   AppTab("plan", R.string.tab_plan, Icons.Filled.Map),
+  AppTab("settings", R.string.tab_settings, Icons.Filled.Settings),
 )
 
 @Composable
@@ -83,7 +86,7 @@ private fun BottomBar(navController: NavHostController) {
         selected = selected,
         onClick = { navController.navigateSingleTop(tab.route) },
         icon = { Icon(tab.icon, contentDescription = stringResource(tab.titleRes)) },
-        label = { stringResource(tab.titleRes) }
+        label = { Text(stringResource(tab.titleRes)) }
       )
     }
   }
@@ -98,7 +101,7 @@ private fun NavigationRailBar(navController: NavHostController) {
         selected = selected,
         onClick = { navController.navigateSingleTop(tab.route) },
         icon = { Icon(tab.icon, contentDescription = stringResource(tab.titleRes)) },
-        label = { stringResource(tab.titleRes) }
+        label = { Text(stringResource(tab.titleRes)) }
       )
     }
   }
@@ -111,17 +114,18 @@ private fun AppNavHost(navController: NavHostController, modifier: Modifier) {
     startDestination = "today",
     modifier = modifier
   ) {
-    composable("today") { PlaceholderScreen("Сегодня") }
-    composable("calendar") { PlaceholderScreen("Календарь") }
-    composable("plantings") { PlaceholderScreen("Посадки") }
-    composable("plan") { PlaceholderScreen("План участка") }
+    composable("today") { PlaceholderScreen(R.string.tab_today) }
+    composable("calendar") { PlaceholderScreen(R.string.tab_calendar) }
+    composable("plantings") { PlaceholderScreen(R.string.tab_plantings) }
+    composable("plan") { PlaceholderScreen(R.string.tab_plan) }
+    composable("settings") { PlaceholderScreen(R.string.tab_settings) }
   }
 }
 
 @Composable
-private fun PlaceholderScreen(title: String) {
+private fun PlaceholderScreen(@StringRes titleRes: Int) {
   Surface(Modifier.fillMaxSize()) {
-    Text(text = title, style = MaterialTheme.typography.headlineMedium)
+    Text(text = stringResource(titleRes), style = MaterialTheme.typography.headlineMedium)
   }
 }
 
