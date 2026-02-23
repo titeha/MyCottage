@@ -31,6 +31,7 @@ import ru.mycottege.app.R
 import androidx.compose.material.icons.filled.Settings
 import ru.mycottege.app.ui.screens.SettingsScreen
 import ru.mycottege.app.ui.common.AppScreen
+import ru.mycottege.app.ui.screens.PlantingsScreen
 
 private data class AppTab(
   val route: String,
@@ -117,7 +118,7 @@ private fun AppNavHost(navController: NavHostController, modifier: Modifier) {
   ) {
     composable("today") { PlaceholderScreen(R.string.tab_today) }
     composable("calendar") { PlaceholderScreen(R.string.tab_calendar) }
-    composable("plantings") { PlaceholderScreen(R.string.tab_plantings) }
+    composable("plantings") { PlantingsScreen() }
     composable("plan") { PlaceholderScreen(R.string.tab_plan) }
     composable("settings") { SettingsScreen() }
   }
