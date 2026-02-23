@@ -11,6 +11,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import ru.mycottege.app.settings.SettingsPrefs
 import ru.mycottege.app.settings.ThemeMode
+import androidx.compose.ui.res.stringResource
+import ru.mycottege.app.R
+import ru.mycottege.app.settings.UnitSystem
 
 @Composable
 fun SettingsScreen() {
@@ -20,6 +23,8 @@ fun SettingsScreen() {
 
   val themeMode by prefs.themeMode.collectAsState(initial = ThemeMode.SYSTEM)
   val dynamicColor by prefs.dynamicColor.collectAsState(initial = true)
+
+  val unitSystem by prefs.unitSystem.collectAsState(initial = UnitSystem.METRIC)
 
   Column(
     modifier = Modifier
@@ -68,5 +73,24 @@ private fun ThemeOption(title: String, selected: Boolean, onClick: () -> Unit) {
   ) {
     RadioButton(selected = selected, onClick = onClick)
     Text(title, modifier = Modifier.padding(start = 8.dp))
+  }
+}
+
+@Composable
+private fun UnitOption(
+  title: String,
+  hint: String,
+  selected: Boolean,
+  onClick: () -> Unit
+) {
+  Row(
+    modifier = Modifier.fillMaxWidth(),
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    RadioButton(selected = selected, onClick = onClick)
+    Column(modifier = Modifier.padding(start = 8.dp)) {
+      Text(title)
+      Text(hint, style = MaterialTheme.typography.bodySmall)
+    }
   }
 }

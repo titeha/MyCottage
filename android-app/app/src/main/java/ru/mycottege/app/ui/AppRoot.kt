@@ -118,7 +118,7 @@ private fun AppNavHost(navController: NavHostController, modifier: Modifier) {
     composable("calendar") { PlaceholderScreen(R.string.tab_calendar) }
     composable("plantings") { PlaceholderScreen(R.string.tab_plantings) }
     composable("plan") { PlaceholderScreen(R.string.tab_plan) }
-    composable("settings") { PlaceholderScreen(R.string.tab_settings) }
+    composable("settings") { SettingsScreen() }
   }
 }
 

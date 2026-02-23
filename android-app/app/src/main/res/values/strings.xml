@@ -8,6 +8,13 @@
     <string name="tab_plan">План</string>
     <string name="tab_settings">Настройки</string>
 
+    <!-- Settings -->
+    <string name="settings_units_title">Единицы измерения</string>
+    <string name="settings_units_metric">Метрическая</string>
+    <string name="settings_units_imperial">Имперская</string>
+    <string name="settings_units_hint_metric">м, °C, л</string>
+    <string name="settings_units_hint_imperial">ft, °F, gal</string>
+
     <!-- Disclaimer -->
     <string name="disclaimer_title">Важная информация</string>
     <string name="disclaimer_accept">Понимаю и принимаю</string>
