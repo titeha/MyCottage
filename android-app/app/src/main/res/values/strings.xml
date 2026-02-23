@@ -49,4 +49,13 @@
     <!-- Common -->
     <string name="common_ok">ОК</string>
     <string name="common_delete">Удалить</string>
+
+    <!-- Crops -->
+    <string name="crop_radish">Редис</string>
+    <string name="crop_cucumber">Огурец</string>
+    <string name="crop_tomato">Томат</string>
+    <string name="crop_custom">Другая (ввести)</string>
+
+    <!-- Plantings -->
+    <string name="plantings_harvest_window">Ожидаемый сбор: %1$s–%2$s</string>
 </resources>
