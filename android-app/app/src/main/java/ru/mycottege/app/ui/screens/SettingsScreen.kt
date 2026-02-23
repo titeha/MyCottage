@@ -62,6 +62,23 @@ fun SettingsScreen() {
     } else {
       Text("Динамические цвета доступны на Android 12+.", style = MaterialTheme.typography.bodySmall)
     }
+
+    Text(
+      text = stringResource(R.string.settings_units_title),
+      style = MaterialTheme.typography.titleMedium
+    )
+
+    UnitOption(
+      title = stringResource(R.string.settings_units_metric),
+      hint = stringResource(R.string.settings_units_hint_metric),
+      selected = unitSystem == UnitSystem.METRIC
+    ) { scope.launch { prefs.setUnitSystem(UnitSystem.METRIC) } }
+
+    UnitOption(
+      title = stringResource(R.string.settings_units_imperial),
+      hint = stringResource(R.string.settings_units_hint_imperial),
+      selected = unitSystem == UnitSystem.IMPERIAL
+    ) { scope.launch { prefs.setUnitSystem(UnitSystem.IMPERIAL) } }
   }
 }
 
