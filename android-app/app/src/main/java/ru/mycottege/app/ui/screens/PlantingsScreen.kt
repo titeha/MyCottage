@@ -54,6 +54,8 @@ fun PlantingsScreen() {
 
   var showAddDialog by remember { mutableStateOf(false) }
 
+  var deleteCandidate by remember { mutableStateOf<PlantingEntity?>(null) }
+
   AppScreen(R.string.tab_plantings) {
 
     if (plantings.isEmpty()) {
@@ -64,6 +66,7 @@ fun PlantingsScreen() {
       PlantingsList(
         items = plantings,
         modifier = Modifier.weight(1f, fill = true),
+        onDeleteRequest = { deleteCandidate = it }
       )
     }
 
@@ -90,12 +93,37 @@ fun PlantingsScreen() {
       }
     )
   }
+
+  val candidate = deleteCandidate
+  if (candidate != null) {
+    AlertDialog(
+      onDismissRequest = { deleteCandidate = null },
+      title = { Text(stringResource(R.string.plantings_delete_title)) },
+      text = { Text(stringResource(R.string.plantings_delete_text, candidate.cropName)) },
+      confirmButton = {
+        TextButton(
+          onClick = {
+            scope.launch { dao.deleteById(candidate.id) }
+            deleteCandidate = null
+          }
+        ) {
+          Text(stringResource(R.string.common_delete))
+        }
+      },
+      dismissButton = {
+        TextButton(onClick = { deleteCandidate = null }) {
+          Text(stringResource(R.string.common_cancel))
+        }
+      }
+    )
+  }
 }
 
 @Composable
 private fun PlantingsList(
   items: List<PlantingEntity>,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  onDeleteRequest: (PlantingEntity) -> Unit
 ) {
   val formatter = remember { DateTimeFormatter.ofPattern("dd.MM.yyyy") }
 
@@ -114,6 +142,9 @@ private fun PlantingsList(
             ),
             style = MaterialTheme.typography.bodySmall
           )
+          TextButton(onClick = { onDeleteRequest(item) }) {
+            Text(text = stringResource(R.string.plantings_delete))
+          }
         }
       }
     }
