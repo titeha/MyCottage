@@ -167,7 +167,10 @@ private fun AddPlantingDialog(
     confirmButton = {
       TextButton(
         enabled = crop.isNotBlank(),
-        onClick = { onAdd(crop, selectedDate) }
+        onClick = {
+          onAdd(crop, selectedDate)
+          onDismiss()
+        }
       ) {
         Text(text = stringResource(R.string.common_add))
       }
