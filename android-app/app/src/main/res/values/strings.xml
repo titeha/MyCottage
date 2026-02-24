@@ -58,4 +58,11 @@
 
     <!-- Plantings -->
     <string name="plantings_harvest_window">Ожидаемый сбор: %1$s–%2$s</string>
+
+    <!-- Today -->
+    <string name="today_empty">На ближайшие %1$d дней событий нет.</string>
+    <string name="today_harvest_active_title">Идёт сбор: %1$s</string>
+    <string name="today_harvest_upcoming_title">Ожидается сбор: %1$s</string>
+    <string name="today_harvest_until">До %1$s</string>
+    <string name="today_harvest_window">Окно сбора: %1$s–%2$s</string>
 </resources>
