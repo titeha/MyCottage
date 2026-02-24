@@ -65,4 +65,7 @@
     <string name="today_harvest_upcoming_title">Ожидается сбор: %1$s</string>
     <string name="today_harvest_until">До %1$s</string>
     <string name="today_harvest_window">Окно сбора: %1$s–%2$s</string>
+
+    <!-- Calendar -->
+    <string name="calendar_empty">На ближайшие %1$d дней событий нет.</string>
 </resources>
