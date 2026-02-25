@@ -34,6 +34,7 @@ import ru.mycottege.app.ui.common.AppScreen
 import ru.mycottege.app.ui.screens.PlantingsScreen
 import ru.mycottege.app.ui.screens.TodayScreen
 import ru.mycottege.app.ui.screens.CalendarScreen
+import ru.mycottege.app.ui.screens.PlanScreen
 
 private data class AppTab(
   val route: String,
@@ -121,14 +122,9 @@ private fun AppNavHost(navController: NavHostController, modifier: Modifier) {
     composable("today") { TodayScreen() }
     composable("calendar") { CalendarScreen() }
     composable("plantings") { PlantingsScreen() }
-    composable("plan") { PlaceholderScreen(R.string.tab_plan) }
+    composable("plan") { PlanScreen() }
     composable("settings") { SettingsScreen() }
   }
-}
-
-@Composable
-private fun PlaceholderScreen(@StringRes titleRes: Int) {
-  AppScreen(titleRes)
 }
 
 @Composable
