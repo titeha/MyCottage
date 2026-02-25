@@ -219,6 +219,15 @@ private fun PlanRow(
       // Левая колонка (фиксированная)
       Column(modifier = Modifier.width(LABEL_WIDTH)) {
         Text(text = title, style = MaterialTheme.typography.titleMedium)
+
+        val variety = planting.varietyName?.takeIf { it.isNotBlank() }
+        if (variety != null) {
+          Text(
+            text = stringResource(R.string.plantings_variety_title, variety),
+            style = MaterialTheme.typography.bodySmall
+          )
+        }
+
         Text(
           text = stringResource(R.string.plantings_planted_on, planting.plantedDate.format(dateFormatter)),
           style = MaterialTheme.typography.bodySmall
