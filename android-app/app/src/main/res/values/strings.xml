@@ -68,4 +68,7 @@
 
     <!-- Calendar -->
     <string name="calendar_empty">На ближайшие %1$d дней событий нет.</string>
+
+    <!-- Plan (Timeline) -->
+    <string name="plan_empty">Нет посадок для отображения. Добавьте их во вкладке «Посадки».</string>
 </resources>
