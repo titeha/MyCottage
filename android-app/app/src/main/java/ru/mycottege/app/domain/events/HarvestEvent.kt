@@ -10,5 +10,6 @@ data class HarvestEvent(
   val status: HarvestEventStatus,
   val windowStart: LocalDate,
   val windowEnd: LocalDate,
-  val sortDate: LocalDate
+  val sortDate: LocalDate,
+  val varietyName: String? = null
 )

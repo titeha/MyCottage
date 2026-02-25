@@ -31,7 +31,8 @@ object HarvestEventsGenerator {
           status = HarvestEventStatus.ACTIVE,
           windowStart = window.start,
           windowEnd = window.end,
-          sortDate = today
+          sortDate = today,
+          varietyName = p.varietyName
         )
       }
 
@@ -44,7 +45,8 @@ object HarvestEventsGenerator {
           status = HarvestEventStatus.UPCOMING,
           windowStart = window.start,
           windowEnd = window.end,
-          sortDate = window.start
+          sortDate = window.start,
+          varietyName = p.varietyName
         )
       }
 

@@ -7,5 +7,6 @@ data class PlantingSnapshot(
   val id: Long,
   val cropId: CropId?,
   val cropNameFallback: String,
-  val plantedDate: LocalDate
+  val plantedDate: LocalDate,
+  val varietyName: String? = null
 )

@@ -10,6 +10,7 @@ fun PlantingEntity.toSnapshot(): PlantingSnapshot {
     id = id,
     cropId = parsedId,
     cropNameFallback = cropName,
-    plantedDate = plantedDate
+    plantedDate = plantedDate,
+    varietyName = this.varietyName
   )
 }

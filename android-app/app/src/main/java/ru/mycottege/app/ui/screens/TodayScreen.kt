@@ -82,6 +82,15 @@ private fun HarvestEventsList(events: List<HarvestEvent>) {
           modifier = Modifier.padding(start = 12.dp, top = 12.dp, end = 12.dp)
         )
 
+        val variety = e.varietyName?.takeIf { it.isNotBlank() }
+        if (variety != null) {
+          Text(
+            text = stringResource(R.string.plantings_variety_title, variety),
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(start = 12.dp, top = 4.dp, end = 12.dp)
+          )
+        }
+
         when (e.status) {
           HarvestEventStatus.ACTIVE -> {
             Text(
