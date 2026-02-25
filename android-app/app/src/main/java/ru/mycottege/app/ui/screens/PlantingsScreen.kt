@@ -98,7 +98,6 @@ fun PlantingsScreen() {
       }
     )
   }
-
   val candidate = deleteCandidate
   if (candidate != null) {
 
@@ -207,9 +206,8 @@ private fun AddPlantingDialog(
 ) {
   val knownCrops = remember { listOf(CropId.RADISH, CropId.CUCUMBER, CropId.TOMATO) }
 
-  // null = пользовательская культура (ввод вручную)
-  var selectedCrop by remember { mutableStateOf<CropId?>(CropId.RADISH) }
-  var customName by remember { mutableStateOf("") }
+  var selectedCrop by remember { mutableStateOf<CropId?>(CropId.RADISH) } // Важно: CropId?
+  var customCropName by remember { mutableStateOf("") }
   var variety by remember { mutableStateOf("") }
 
   var selectedDate by remember { mutableStateOf(LocalDate.now()) }
@@ -217,14 +215,15 @@ private fun AddPlantingDialog(
 
   val formatter = remember { DateTimeFormatter.ofPattern("dd.MM.yyyy") }
 
-  val canAdd = selectedCrop != null || customName.isNotBlank()
-
-  // Важно: stringResource — @Composable, поэтому вычисляем имя тут, а не внутри onClick.
+  // Имя культуры, которое будем сохранять (из каталога или введённое вручную)
   val cropNameToSave = if (selectedCrop != null) {
     stringResource(cropTitleRes(selectedCrop!!))
   } else {
-    customName.trim()
+    customCropName.trim()
   }
+
+  // Кнопка активна, когда культура задана
+  val canAdd = cropNameToSave.isNotBlank()
 
   AlertDialog(
     onDismissRequest = onDismiss,
@@ -251,16 +250,27 @@ private fun AddPlantingDialog(
           onClick = { selectedCrop = null }
         )
 
+        // Поле названия культуры появляется ТОЛЬКО если "Другая"
         if (selectedCrop == null) {
           OutlinedTextField(
-            value = variety,
-            onValueChange = { variety = it },
-            label = { Text(text = stringResource(R.string.plantings_variety_label)) },
-            placeholder = { Text(text = stringResource(R.string.plantings_variety_placeholder)) },
+            value = customCropName,
+            onValueChange = { customCropName = it },
+            label = { Text(text = stringResource(R.string.plantings_crop_label)) },
+            placeholder = { Text(text = stringResource(R.string.plantings_crop_placeholder)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
           )
         }
+
+        // Сорт — отдельное поле, всегда доступно
+        OutlinedTextField(
+          value = variety,
+          onValueChange = { variety = it },
+          label = { Text(text = stringResource(R.string.plantings_variety_label)) },
+          placeholder = { Text(text = stringResource(R.string.plantings_variety_placeholder)) },
+          singleLine = true,
+          modifier = Modifier.fillMaxWidth()
+        )
 
         Row(
           modifier = Modifier.fillMaxWidth(),
@@ -285,10 +295,11 @@ private fun AddPlantingDialog(
       TextButton(
         enabled = canAdd,
         onClick = {
-          val varietyToSave = variety.trim().takeIf { it.isNotBlank() }
           val cropIdToSave: String? = selectedCrop?.name
+          val varietyToSave = variety.trim().takeIf { it.isNotBlank() }
+
           onAdd(cropIdToSave, cropNameToSave, varietyToSave, selectedDate)
-          onDismiss() // закрываем диалог
+          onDismiss()
         }
       ) {
         Text(text = stringResource(R.string.common_add))
