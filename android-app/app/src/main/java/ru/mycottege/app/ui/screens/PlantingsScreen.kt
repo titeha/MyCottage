@@ -101,10 +101,17 @@ fun PlantingsScreen() {
 
   val candidate = deleteCandidate
   if (candidate != null) {
+
+    val nameForDelete = if (candidate.varietyName.isNullOrBlank()) {
+      candidate.cropName
+    } else {
+      "${candidate.cropName} — ${candidate.varietyName}"
+    }
+
     AlertDialog(
       onDismissRequest = { deleteCandidate = null },
       title = { Text(stringResource(R.string.plantings_delete_title)) },
-      text = { Text(stringResource(R.string.plantings_delete_text, candidate.cropName)) },
+      text = { Text(stringResource(R.string.plantings_delete_text, nameForDelete)) },
       confirmButton = {
         TextButton(
           onClick = {
@@ -145,6 +152,14 @@ private fun PlantingsList(
         stringResource(cropTitleRes(knownCropId))
       } else {
         item.cropName
+      }
+
+      val variety = item.varietyName?.takeIf { it.isNotBlank() }
+      if (variety != null) {
+        Text(
+          text = stringResource(R.string.plantings_variety_title, variety),
+          style = MaterialTheme.typography.bodySmall
+        )
       }
 
       val harvestWindow = remember(item.plantedDate, knownCropId) {
