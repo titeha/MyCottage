@@ -71,4 +71,8 @@
 
     <!-- Plan (Timeline) -->
     <string name="plan_empty">Нет посадок для отображения. Добавьте их во вкладке «Посадки».</string>
+
+    <string name="plantings_variety_label">Сорт (необязательно)</string>
+    <string name="plantings_variety_placeholder">Например: Де Барао</string>
+    <string name="plantings_variety_title">Сорт: %1$s</string>
 </resources>
