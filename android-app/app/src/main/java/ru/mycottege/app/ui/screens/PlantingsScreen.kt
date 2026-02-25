@@ -82,12 +82,15 @@ fun PlantingsScreen() {
   if (showAddDialog) {
     AddPlantingDialog(
       onDismiss = { showAddDialog = false },
-      onAdd = { cropId, cropName, plantedDate ->
+      onAdd = { cropId, cropName, varietyName, plantedDate ->
+        val varietyToSave = varietyName?.trim()?.takeIf { it.isNotBlank() }
+
         scope.launch {
           dao.insert(
             PlantingEntity(
               cropId = cropId,
               cropName = cropName.trim(),
+              varietyName = varietyToSave,
               plantedDate = plantedDate
             )
           )
@@ -185,13 +188,14 @@ private fun PlantingsList(
 @Composable
 private fun AddPlantingDialog(
   onDismiss: () -> Unit,
-  onAdd: (String?, String, LocalDate) -> Unit
+  onAdd: (String?, String, String?, LocalDate) -> Unit
 ) {
   val knownCrops = remember { listOf(CropId.RADISH, CropId.CUCUMBER, CropId.TOMATO) }
 
   // null = пользовательская культура (ввод вручную)
   var selectedCrop by remember { mutableStateOf<CropId?>(CropId.RADISH) }
   var customName by remember { mutableStateOf("") }
+  var variety by remember { mutableStateOf("") }
 
   var selectedDate by remember { mutableStateOf(LocalDate.now()) }
   var showDatePicker by remember { mutableStateOf(false) }
@@ -234,10 +238,10 @@ private fun AddPlantingDialog(
 
         if (selectedCrop == null) {
           OutlinedTextField(
-            value = customName,
-            onValueChange = { customName = it },
-            label = { Text(text = stringResource(R.string.plantings_crop_label)) },
-            placeholder = { Text(text = stringResource(R.string.plantings_crop_placeholder)) },
+            value = variety,
+            onValueChange = { variety = it },
+            label = { Text(text = stringResource(R.string.plantings_variety_label)) },
+            placeholder = { Text(text = stringResource(R.string.plantings_variety_placeholder)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
           )
@@ -266,9 +270,9 @@ private fun AddPlantingDialog(
       TextButton(
         enabled = canAdd,
         onClick = {
-          // 11.3.3: вот здесь формируем cropId + cropName по выбору
+          val varietyToSave = variety.trim().takeIf { it.isNotBlank() }
           val cropIdToSave: String? = selectedCrop?.name
-          onAdd(cropIdToSave, cropNameToSave, selectedDate)
+          onAdd(cropIdToSave, cropNameToSave, varietyToSave, selectedDate)
           onDismiss() // закрываем диалог
         }
       ) {
