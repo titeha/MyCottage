@@ -9,5 +9,9 @@ data class PlantingEntity(
   @PrimaryKey(autoGenerate = true) val id: Long = 0,
   val cropId: String? = null,
   val cropName: String,
+
+  // Название сорта/гибрида (опционально). Пока просто текст.
+  val varietyName: String? = null,
+
   val plantedDate: LocalDate
 )
