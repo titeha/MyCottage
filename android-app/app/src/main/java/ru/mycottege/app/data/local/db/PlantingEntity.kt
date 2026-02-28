@@ -7,11 +7,16 @@ import java.time.LocalDate
 @Entity(tableName = "plantings")
 data class PlantingEntity(
   @PrimaryKey(autoGenerate = true) val id: Long = 0,
+
+  // Участок (на старте всегда 1)
+  val siteId: Long = 1,
+
   val cropId: String? = null,
   val cropName: String,
-
-  // Название сорта/гибрида (опционально). Пока просто текст.
   val varietyName: String? = null,
+
+  // OPEN_GROUND / GREENHOUSE (храним строкой)
+  val cultivation: String = "OPEN_GROUND",
 
   val plantedDate: LocalDate
 )
