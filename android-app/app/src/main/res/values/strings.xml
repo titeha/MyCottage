@@ -75,4 +75,10 @@
     <string name="plantings_variety_label">Сорт (необязательно)</string>
     <string name="plantings_variety_placeholder">Например: Де Барао</string>
     <string name="plantings_variety_title">Сорт: %1$s</string>
+
+    <!-- Cultivation -->
+    <string name="plantings_cultivation_label">Место выращивания</string>
+    <string name="cultivation_open_ground">Открытый грунт</string>
+    <string name="cultivation_greenhouse">Теплица</string>
+    <string name="plantings_cultivation_title">Место: %1$s</string>
 </resources>
